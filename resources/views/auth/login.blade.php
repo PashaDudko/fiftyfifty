@@ -1,6 +1,9 @@
 <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
+    <x-slot name="google">
+        <x-google-button action="Login" />
+    </x-slot>
 
     <form method="POST" action="{{ route('login') }}">
         @csrf

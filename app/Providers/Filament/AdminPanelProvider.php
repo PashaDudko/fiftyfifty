@@ -27,6 +27,8 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->brandName('Fifty-Fifty')
+            ->homeUrl('/dashboard')
             ->colors([
                 'primary' => Color::Amber,
             ])

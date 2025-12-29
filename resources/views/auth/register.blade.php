@@ -1,4 +1,8 @@
 <x-guest-layout>
+    <x-slot name="google">
+        <x-google-button action="Sign up" />
+    </x-slot>
+
     <form method="POST" action="{{ route('register') }}">
         @csrf
 

@@ -19,6 +19,6 @@ class UserSeeder extends Seeder
         $admin->syncRoles(Roles::ADMIN->value);
 
         $user = User::factory(1, ['name' => 'User ', 'email' => 'user@user.com'])->create()->first();
-        $admin->syncRoles(Roles::USER->value);
+        $user->syncRoles(Roles::USER->value);
     }
 }
