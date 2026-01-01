@@ -2,7 +2,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
     <x-slot name="google">
-        <x-google-button action="Login" />
+        <x-google-button action="Sing in" />
     </x-slot>
 
     <form method="POST" action="{{ route('login') }}">

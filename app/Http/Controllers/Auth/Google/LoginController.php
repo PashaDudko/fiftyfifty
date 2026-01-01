@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth\Google;
 
+use App\Events\UserRegisteredThroughGoogle;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -21,12 +22,15 @@ class LoginController extends Controller
         $user = User::where('email', $googleUser->email)->first();
 
         if (!$user) {
+            $password = 'password'; //Str::random(8);
             $user = User::create([
                 'name' => $googleUser->name,
                 'email' => $googleUser->email,
-                'password' => \Hash::make('password'), // ToDo: update password generation and make event to send email with generated password for user to change it!
+                'password' => \Hash::make($password),
                 'remember_token' => Str::random(10),
             ]);
+
+            UserRegisteredThroughGoogle::dispatch($user, $password);
         }
 
         Auth::login($user);
