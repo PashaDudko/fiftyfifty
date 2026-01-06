@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\Google\LoginController as AuthGoogleLoginController;
+use App\Http\Controllers\Auth\Telegram\LoginController as AuthTelegramLoginController;
 use App\Http\Controllers\OrderController;
 
 Route::get('/', function () {
@@ -22,5 +23,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('orders', OrderController::class);
 });
+
+Route::name('callbacks.')->prefix('callbacks')->group(function () {
+    Route::get('/auth-telegram', AuthTelegramLoginController::class)/*->middleware(['role.admin'])*/->name('auth.telegram');
+});
+
+//Route::post('/telegram/webhook', [App\Http\Controllers\TelegramWebhookController::class, 'handle']);
 
 require __DIR__.'/auth.php';
