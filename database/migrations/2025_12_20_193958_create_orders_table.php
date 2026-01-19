@@ -14,8 +14,12 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('shop_id')->constrained()->onDelete('cascade');
             $table->string('title');
-            $table->decimal('price', 10, 2);
+            $table->string('description')->nullable(true);
+            $table->decimal('current_amount', 10, 2);
+            $table->decimal('free_shipping_threshold', 10, 2);
+            $table->dateTime('join_deadline_at')->nullable(true);
             $table->string('status')->default('pending');
             $table->timestamps();
         });
