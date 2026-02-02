@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('current_amount', 10, 2);
             $table->decimal('free_shipping_threshold', 10, 2);
             $table->dateTime('join_deadline_at')->nullable(true);
-            $table->string('status')->default('pending');
+            $table->string('status')->default('active');
             $table->timestamps();
         });
     }

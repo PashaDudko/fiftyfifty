@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('shops', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('logo')->default('storage/general/shops/default.jpeg');
+            $table->string('logo')->nullable(true);
             $table->boolean('active')->default(true);
             $table->timestamps();
         });

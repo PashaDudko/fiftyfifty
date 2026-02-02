@@ -27,10 +27,11 @@ class ShopResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('logo')
-                    ->required()
-                    ->maxLength(255)
-                    ->default('storage/general/shops/default.jpeg'),
+                Forms\Components\FileUpload::make('logo')
+                    ->label('LoGo')
+                    ->directory('shops')
+                    ->visibility('public')
+                    ->image(),
                 Forms\Components\Toggle::make('active')
                     ->label('Shop is Active')
                     ->default(true)
@@ -46,8 +47,8 @@ class ShopResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('logo')
-                    ->searchable(),
+                Tables\Columns\ImageColumn::make('logo_img')
+                    ->label('lOgo'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

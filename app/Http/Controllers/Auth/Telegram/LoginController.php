@@ -33,3 +33,4 @@ class LoginController extends Controller
         return redirect()->route('dashboard');
     }
 }
+//Добавить в адмін панель - телескоп, почту....

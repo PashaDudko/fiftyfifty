@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Enums\Order as OrderEnum;
 use App\Models\Shop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,16 +49,35 @@ class OrderController extends Controller
 
     public function edit(Order $order)
     {
-        //
+        $shops = Shop::all();
+
+        return view('orders.edit', compact('order', 'shops'));
     }
 
     public function update(Request $request, Order $order)
     {
-        //
+        $order->update($request->all());
+
+        return redirect()->route('orders.index')
+            ->with('success', 'Order is updated successfully!');
     }
 
     public function destroy(Order $order)
     {
         //
+    }
+
+    public function activate(Order $order)
+    {
+        $order->update(['status', OrderEnum::ACTIVE->value]);
+
+        return redirect()->route('orders.index')->with('success', 'Order was activated successfully!');
+    }
+
+    public function pause(Order $order)
+    {
+        $order->update(['status', OrderEnum::PAUSED->value]);
+
+        return redirect()->route('orders.index')->with('success', 'Order was paused successfully!');
     }
 }

@@ -22,6 +22,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('orders', OrderController::class);
+    Route::get('/active/{id}', [OrderController::class, 'activate'])->name('order.activate');
+    Route::get('/pause/{id}', [OrderController::class, 'pause'])->name('order.pause');
 });
 
 Route::name('callbacks.')->prefix('callbacks')->group(function () {
