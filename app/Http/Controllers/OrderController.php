@@ -66,18 +66,4 @@ class OrderController extends Controller
     {
         //
     }
-
-    public function activate(Order $order)
-    {
-        $order->update(['status', OrderEnum::ACTIVE->value]);
-
-        return redirect()->route('orders.index')->with('success', 'Order was activated successfully!');
-    }
-
-    public function pause(Order $order)
-    {
-        $order->update(['status', OrderEnum::PAUSED->value]);
-
-        return redirect()->route('orders.index')->with('success', 'Order was paused successfully!');
-    }
 }

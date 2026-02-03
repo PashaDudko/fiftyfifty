@@ -1,17 +1,18 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\Google\LoginController as AuthGoogleLoginController;
 use App\Http\Controllers\Auth\Telegram\LoginController as AuthTelegramLoginController;
 use App\Http\Controllers\OrderController;
+use App\Models\Order;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('dashboard')->with('orders', Order::all());
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/google/redirect', [AuthGoogleLoginController::class, 'redirectToGoogle'])->name('google.redirect');
@@ -22,8 +23,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('orders', OrderController::class);
-    Route::get('/active/{id}', [OrderController::class, 'activate'])->name('order.activate');
-    Route::get('/pause/{id}', [OrderController::class, 'pause'])->name('order.pause');
 });
 
 Route::name('callbacks.')->prefix('callbacks')->group(function () {

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Order as OrderEnum;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
@@ -15,7 +16,10 @@ class Order extends Model
         'free_shipping_threshold',
         'join_deadline_at',
         'status',
+    ];
 
+    protected $casts = [
+        'status' => OrderEnum::class,
     ];
 
     public function user(): BelongsTo

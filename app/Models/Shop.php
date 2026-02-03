@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\Order as OrderEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -14,11 +13,11 @@ class Shop extends Model
     protected $fillable = [
         'name',
         'logo',
-        'status'
+        'is_active'
     ];
 
     protected $casts = [
-        'status' => OrderEnum::class,
+        'is_active' => 'boolean',
     ];
 
     public function getLogoImgAttribute(): string

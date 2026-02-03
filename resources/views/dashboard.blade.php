@@ -35,13 +35,25 @@
         @include('layouts.sidebar')
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
-                </div>
+    <div class="bg-white p-6 shadow sm:rounded-lg" x-data="{ activeTab: 'active' }">
+{{--        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4"> </div>--}}
+        <x-order-status-tabs />
+        @forelse($orders as $order)
+        @empty
+            <div class="col-span-full text-center py-12">
+                <p class="text-gray-500">There are no orders yet</p>
             </div>
-        </div>
+        @endforelse
+
     </div>
+
+{{--    <div class="py-12">--}}
+{{--        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">--}}
+{{--            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">--}}
+{{--                <div class="p-6 text-gray-900">--}}
+{{--                    {{ __("You're logged in!") }}--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 </x-app-layout>
