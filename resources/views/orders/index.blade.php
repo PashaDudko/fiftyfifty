@@ -20,24 +20,6 @@
 
     <div class="bg-white p-6 shadow sm:rounded-lg" x-data="{ activeTab: 'active' }">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4">
-{{--            <nav class="flex space-x-1 bg-gray-100 p-1 rounded-xl w-fit" aria-label="Tabs">--}}
-{{--                <button @click="activeTab = 'active'"--}}
-{{--                        :class="activeTab === 'active' ? 'bg-white text-indigo-700 shadow-sm' : 'text-gray-500 hover:text-gray-700'"--}}
-{{--                        class="px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200">--}}
-{{--                    Active--}}
-{{--                </button>--}}
-{{--                <button @click="activeTab = 'paused'"--}}
-{{--                        :class="activeTab === 'paused' ? 'bg-white text-indigo-700 shadow-sm' : 'text-gray-500 hover:text-gray-700'"--}}
-{{--                        class="px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200">--}}
-{{--                    Paused--}}
-{{--                </button>--}}
-{{--                <button @click="activeTab = 'closed'"--}}
-{{--                        :class="activeTab === 'closed' ? 'bg-white text-indigo-700 shadow-sm' : 'text-gray-500 hover:text-gray-700'"--}}
-{{--                        class="px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200">--}}
-{{--                    Closed--}}
-{{--                </button>--}}
-{{--            </nav>--}}
-
             <x-order-status-tabs />
 
             <a href="{{ route('orders.create') }}" class="inline-flex items-center justify-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 transition duration-150">
@@ -90,6 +72,7 @@
                         <a href="{{ route('orders.edit', $order->id) }}" class="p-1.5 bg-white border border-gray-200 rounded-lg text-blue-600 hover:bg-blue-50 shadow-sm">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
                         </a>
+
                         <form action="{{ route('orders.destroy', $order->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                             @csrf @method('DELETE')
                             <button type="submit" class="p-1.5 bg-white border border-gray-200 rounded-lg text-red-600 hover:bg-red-50 shadow-sm">
@@ -99,7 +82,13 @@
                     </div>
 
                     <div class="flex flex-col h-full">
-                        <h3 class="font-bold text-gray-900 text-lg mb-3 pr-14 truncate" title="{{ $order->title }}">
+                        <div class="mb-3">
+                            <img src="{{ asset('storage/' . $order->shop->logo) }}"
+                                 alt="Logo"
+                                 class="h-8 w-auto object-contain">
+                        </div>
+
+                        <h3 class="font-bold text-gray-900 text-lg mb-3 truncate" title="{{ $order->title }}">
                             {{ $order->title }}
                         </h3>
 

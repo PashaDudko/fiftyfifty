@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('avatar')->default('storage/user/default.jpg');
+            $table->string('avatar')->default('users/avatars/default.png');
             $table->integer('telegram_id')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

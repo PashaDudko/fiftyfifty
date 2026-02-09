@@ -66,4 +66,18 @@ class OrderController extends Controller
     {
         //
     }
+
+    public function join(Order $order)
+    {
+        $order->subscribers()->attach(auth()->id());
+
+        return back()->with('success', 'You have been joined to this order!');
+    }
+
+    public function leave(Order $order)
+    {
+        $order->subscribers()->detach(auth()->id());
+
+        return back()->with('success', 'You have been left to this order!');
+    }
 }
