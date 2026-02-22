@@ -37,6 +37,8 @@ class Order extends Model
 
     public function subscribers(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'order_subscribers');
+        return $this->belongsToMany(User::class, 'order_subscribers')
+            ->withPivot('amount')
+            ->withTimestamps();
     }
 }

@@ -13,9 +13,6 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', DashboardController::class)->middleware(['auth', 'verified'])->name('dashboard');
-//Route::get('/dashboard', function () {
-//    return view('dashboard')->with('orders', Order::where('status', 'active')->get());
-//})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/google/redirect', [AuthGoogleLoginController::class, 'redirectToGoogle'])->name('google.redirect');
 Route::get('/google/callback', [AuthGoogleLoginController::class, 'handleGoogleCallback'])->name('google.callback');
@@ -27,6 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/orders', OrderController::class);
     Route::post('/orders/{order}/join', [OrderController::class, 'join'])->name('orders.join');
     Route::post('/orders/{order}/leave', [OrderController::class, 'leave'])->name('orders.leave');
+    Route::put('/orders/{order}/update-amount', [OrderController::class, 'updateAmount'])->name('orders.update-amount');
 });
 
 Route::name('callbacks.')->prefix('callbacks')->group(function () {

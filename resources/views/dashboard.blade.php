@@ -95,6 +95,68 @@
                                 </div>
                             </div>
 
+                            @if(auth()->user()->subscribedOrders()->where('order_id', $order->id)->exists())
+                                @php
+                                    $currentAmount = auth()->user()->subscribedOrders->find($order->id)->pivot->amount;
+                                @endphp
+
+                                <div
+                                    class="mt-2 mb-2 p-2 bg-indigo-50 rounded-lg border border-indigo-100"
+                                    x-data="{ isEditing: false, newAmount: '{{ $currentAmount }}' }"
+                                >
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <span class="block text-[10px] text-indigo-400 uppercase font-bold">Your contribution:</span>
+
+                                            <span x-show="!isEditing" class="text-indigo-700 font-bold text-lg">
+                    {{ number_format($currentAmount, 2) }} $
+                </span>
+                                        </div>
+
+                                        <button
+                                            x-show="!isEditing"
+                                            @click="isEditing = true"
+                                            class="text-indigo-400 hover:text-indigo-600 transition-colors"
+                                            title="Edit amount"
+                                        >
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+
+                                    <form
+                                        x-show="isEditing"
+                                        x-transition
+                                        action="{{ route('orders.update-amount', [$order->id]) }}"
+                                        method="POST"
+                                        class="mt-2 space-y-2"
+                                    >
+                                        @csrf
+                                        @method('PUT')
+
+                                        <input
+                                            type="number"
+                                            name="amount"
+                                            x-model="newAmount"
+                                            step="0.01"
+                                            min="0.01"
+                                            required
+                                            class="w-full px-2 py-1 text-sm border border-indigo-300 rounded focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                                        >
+
+                                        <div class="flex gap-2">
+                                            <button type="submit" class="flex-1 bg-indigo-600 text-white text-[10px] font-bold py-1 rounded hover:bg-indigo-700 uppercase">
+                                                Save
+                                            </button>
+                                            <button type="button" @click="isEditing = false" class="px-2 py-1 bg-white text-gray-500 text-[10px] border border-gray-200 rounded hover:bg-gray-50 uppercase">
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            @endif
+
                             <div class="mt-auto pt-3 border-t border-gray-200">
                                 <span class="block text-xs text-gray-400 mb-1 font-semibold">Planning Date:</span>
                                 <span class="text-sm text-gray-600 italic">
@@ -104,14 +166,49 @@
                             <div class="mt-4 pt-3">
                                 @if($order->user_id != auth()->id())
                                     @if(!auth()->user()->subscribedOrders()->where('order_id', $order->id)->exists())
-                                        <form action="{{ route('orders.join', [$order->id]) }}" method="POST" class="w-full">
+                                        <form action="{{ route('orders.join', [$order->id]) }}" method="POST" class="w-full space-y-3" x-data="{ showInput: false }">
                                             @csrf
-                                            <button type="submit" class="w-full flex items-center justify-center px-4 py-2 bg-emerald-600 text-white text-sm font-bold rounded-lg hover:bg-emerald-700 transition-colors shadow-md">
+
+                                            <div x-show="showInput" x-transition class="space-y-2">
+                                                <label class="block text-xs font-bold text-gray-500 uppercase">Your Contribution ($)</label>
+                                                <input
+                                                    type="number"
+                                                    name="amount"
+                                                    step="0.01"
+                                                    min="0.01"
+                                                    required
+                                                    placeholder="0.00"
+                                                    class="w-full px-3 py-2 border border-emerald-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm"
+                                                >
+                                            </div>
+
+                                            <button
+                                                type="button"
+                                                x-show="!showInput"
+                                                @click="showInput = true"
+                                                class="w-full flex items-center justify-center px-4 py-2 bg-emerald-600 text-white text-sm font-bold rounded-lg hover:bg-emerald-700 transition-colors shadow-md"
+                                            >
                                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                 </svg>
                                                 Join
                                             </button>
+
+                                            <div x-show="showInput" class="flex gap-2">
+                                                <button
+                                                    type="submit"
+                                                    class="flex-1 bg-emerald-600 text-white text-sm font-bold py-2 rounded-lg hover:bg-emerald-700 shadow-md"
+                                                >
+                                                    Confirm
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    @click="showInput = false"
+                                                    class="px-3 py-2 bg-gray-100 text-gray-600 text-sm rounded-lg hover:bg-gray-200"
+                                                >
+                                                    ✕
+                                                </button>
+                                            </div>
                                         </form>
                                     @else
                                         <form action="{{ route('orders.leave', [$order->id]) }}" method="POST" class="w-full">

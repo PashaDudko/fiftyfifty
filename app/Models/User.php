@@ -59,6 +59,8 @@ class User extends Authenticatable
 
     public function subscribedOrders(): BelongsToMany
     {
-        return $this->belongsToMany(Order::class, 'order_subscribers');
+        return $this->belongsToMany(Order::class, 'order_subscribers')
+            ->withPivot('amount')
+            ->withTimestamps();
     }
 }
