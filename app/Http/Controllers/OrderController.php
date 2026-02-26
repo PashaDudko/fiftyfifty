@@ -44,7 +44,7 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        //
+        return view('orders.show', compact('order'));
     }
 
     public function edit(Order $order)
@@ -67,9 +67,11 @@ class OrderController extends Controller
         //
     }
 
-    public function join(Order $order)
+    public function join(Request $request, Order $order)
     {
-        $order->subscribers()->attach(auth()->id());
+        $request->validate(['amount' => 'required|numeric|min:0.01']);
+
+        $order->subscribers()->attach(auth()->id(), ['amount' => $request->amount]);
 
         return back()->with('success', 'You have been joined to this order!');
     }
@@ -79,5 +81,23 @@ class OrderController extends Controller
         $order->subscribers()->detach(auth()->id());
 
         return back()->with('success', 'You have been left to this order!');
+    }
+
+    public function updateAmount(Request $request, Order $order)
+    {
+        $request->validate([
+            'amount' => 'required|numeric|min:0.01'
+        ]);
+
+        $oldAmount = $order->subscribers()->where('user_id', auth()->id())->first()->pivot->amount;
+
+        $order->subscribers()->updateExistingPivot(auth()->id(), [
+            'amount' => $request->amount
+        ]);
+
+        $difference = $request->amount - $oldAmount;
+        $order->increment('current_amount', $difference);
+
+        return back()->with('success', 'Amount updated!');
     }
 }

@@ -81,7 +81,7 @@
                         </form>
                     </div>
 
-                    <div class="flex flex-col h-full">
+                    <div class="flex flex-col h-full relative">
                         <div class="mb-3">
                             <img src="{{ asset('storage/' . $order->shop->logo) }}"
                                  alt="Logo"
@@ -89,7 +89,10 @@
                         </div>
 
                         <h3 class="font-bold text-gray-900 text-lg mb-3 truncate" title="{{ $order->title }}">
-                            {{ $order->title }}
+                            <a href="{{ route('orders.show', $order->id) }}" class="hover:text-indigo-600 focus:outline-none">
+                                <span class="absolute inset-0" aria-hidden="true"></span>
+                                {{ $order->title }}
+                            </a>
                         </h3>
 
                         <div class="mb-2">
