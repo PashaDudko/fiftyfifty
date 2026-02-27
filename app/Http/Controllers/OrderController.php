@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\AttachUserToOrderAction;
 use App\Models\Order;
 use App\Enums\Order as OrderEnum;
 use App\Models\Shop;
@@ -10,6 +11,11 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
+    public function __construct(readonly protected AttachUserToOrderAction $attachUserToOrderAction)
+    {
+
+    }
+
     public function index()
     {
         $orders = auth()->user()->orders;
@@ -37,7 +43,9 @@ class OrderController extends Controller
 
         $validated['user_id'] = Auth::id();
 
-        Order::create($validated);
+        $order = Order::create($validated);
+
+        $this->attachUserToOrderAction->attach($order, auth()->id(), $request->current_amount);
 
         return redirect()->route('orders.index')->with('success', 'Order created successfully!');
     }
@@ -71,7 +79,7 @@ class OrderController extends Controller
     {
         $request->validate(['amount' => 'required|numeric|min:0.01']);
 
-        $order->subscribers()->attach(auth()->id(), ['amount' => $request->amount]);
+        $this->attachUserToOrderAction->attach($order, auth()->id(), $request->amount);
 
         return back()->with('success', 'You have been joined to this order!');
     }
@@ -101,3 +109,4 @@ class OrderController extends Controller
         return back()->with('success', 'Amount updated!');
     }
 }
+

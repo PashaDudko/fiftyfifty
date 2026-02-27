@@ -39,7 +39,7 @@
 
                     <div class="ml-4 overflow-hidden">
                         <p class="text-sm font-bold text-gray-900 truncate" title="{{ $subscriber->name }}">
-                            {{ $subscriber->name }}
+                            {{ $subscriber->name == $order->user->name ? 'YOU' : $subscriber->name}}
                         </p>
                         <div class="flex items-center text-xs text-gray-500">
                             <span class="mr-1">Joined with:</span>
